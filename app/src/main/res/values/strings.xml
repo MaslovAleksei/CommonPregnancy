@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">CommonPregnancy</string>
+
+    <string-array name="weeks">
+        <item>Week 1</item>
+        <item>Week 2</item>
+        <item>Week 3</item>
+        <item>Week 4</item>
+        <item>Week 5</item>
+        <item>Week 6</item>
+        <item>Week 7</item>
+        <item>Week 8</item>
+        <item>Week 9</item>
+    </string-array>
+    <string name="title_activity_main">MainActivity</string>
+</resources>
