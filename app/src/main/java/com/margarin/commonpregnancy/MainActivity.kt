@@ -3,7 +3,7 @@ package com.margarin.commonpregnancy
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.margarin.commonpregnancy.ui.theme.CommonPregnancyTheme
+import com.margarin.commonpregnancy.presentation.ui.theme.CommonPregnancyTheme
 
 //
 //@Inject

@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.ui.theme
+package com.margarin.commonpregnancy.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

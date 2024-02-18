@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.ui.theme
+package com.margarin.commonpregnancy.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
