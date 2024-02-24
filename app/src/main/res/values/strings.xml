@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CommonPregnancy</string>
+    <string name="app_name">Common Pregnancy</string>
 
     <string-array name="weeks">
         <item>Week 1</item>
@@ -13,4 +13,12 @@
         <item>Week 9</item>
     </string-array>
     <string name="title_activity_main">MainActivity</string>
+    <string name="week">неделя</string>
+    <string name="mother">Мама</string>
+    <string name="advices">Полезные советы</string>
+    <string name="weight">вес</string>
+    <string name="length">длина</string>
+    <string name="baby">Малыш</string>
+    <string name="santimeter">см</string>
+    <string name="gram">г</string>
 </resources>

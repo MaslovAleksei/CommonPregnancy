@@ -9,6 +9,8 @@ import com.margarin.commonpregnancy.domain.model.Week
 import com.margarin.commonpregnancy.presentation.details.DetailsStore.Intent
 import com.margarin.commonpregnancy.presentation.details.DetailsStore.Label
 import com.margarin.commonpregnancy.presentation.details.DetailsStore.State
+import com.margarin.commonpregnancy.presentation.utils.ContentType
+import javax.inject.Inject
 
 interface DetailsStore : Store<Intent, State, Label> {
 
@@ -17,7 +19,8 @@ interface DetailsStore : Store<Intent, State, Label> {
     }
 
     data class State(
-        val week: Week
+        val week: Week,
+        val contentType: ContentType
     )
 
     sealed interface Label {
@@ -25,14 +28,14 @@ interface DetailsStore : Store<Intent, State, Label> {
     }
 }
 
-class DetailsStoreFactory(
+class DetailsStoreFactory @Inject constructor(
     private val storeFactory: StoreFactory
 ) {
 
-    fun create(week: Week): DetailsStore =
+    fun create(week: Week, contentType: ContentType): DetailsStore =
         object : DetailsStore, Store<Intent, State, Label> by storeFactory.create(
             name = "DetailsStore",
-            initialState = State(week = week),
+            initialState = State(week = week, contentType = contentType),
             bootstrapper = BootstrapperImpl(),
             executorFactory = ::ExecutorImpl,
             reducer = ReducerImpl

@@ -11,6 +11,7 @@ import com.arkivanov.decompose.value.Value
 import com.margarin.commonpregnancy.domain.model.Week
 import com.margarin.commonpregnancy.presentation.details.DefaultDetailsComponent
 import com.margarin.commonpregnancy.presentation.home.DefaultHomeComponent
+import com.margarin.commonpregnancy.presentation.utils.ContentType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -39,6 +40,7 @@ class DefaultRootComponent @AssistedInject constructor(
             is Config.Details -> {
                 val component = detailsComponentFactory.create(
                     week = config.week,
+                    contentType = config.contentType,
                     onBackClicked = { navigation.pop() },
                     componentContext = componentContext
                 )
@@ -47,9 +49,14 @@ class DefaultRootComponent @AssistedInject constructor(
 
             Config.Home -> {
                 val component = homeComponentFactory.create(
-                    onMotherDetailsClick = { navigation.push(Config.Details(it)) },
-                    onChildDetailsClick = { navigation.push(Config.Details(it)) },
-                    onAdviceClick = { navigation.push(Config.Details(it)) },
+                    onDetailsClick = { week, contentType ->
+                        navigation.push(
+                            Config.Details(
+                                week = week,
+                                contentType = contentType
+                            )
+                        )
+                    },
                     componentContext = componentContext
                 )
                 RootComponent.Child.Home(component)
@@ -63,7 +70,7 @@ class DefaultRootComponent @AssistedInject constructor(
         data object Home : Config
 
         @Parcelize
-        data class Details(val week: Week) : Config
+        data class Details(val week: Week, val contentType: ContentType) : Config
     }
 
     @AssistedFactory

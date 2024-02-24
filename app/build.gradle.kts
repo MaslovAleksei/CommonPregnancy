@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.dagger.core)
     ksp(libs.dagger.compiler)
 
+    implementation (libs.glide.compose)
 
     implementation(libs.mvikotlin.core)
     implementation(libs.mvikotlin.main)

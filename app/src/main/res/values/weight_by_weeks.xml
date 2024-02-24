@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="weight_by_weeks">
+        <item/>
+        <item/>
+        <item/>
+        <item>&lt; 1</item>
+        <item>&lt; 1</item>
+        <item>1</item>
+        <item>3</item>
+        <item>5</item>
+        <item>7</item>
+        <item>9</item>
+        <item>11</item>
+        <item>19</item>
+        <item>31</item>
+        <item>52</item>
+        <item>77</item>
+        <item>118</item>
+        <item>160</item>
+        <item>217</item>
+        <item>270</item>
+        <item>345</item>
+        <item>410</item>
+        <item>506</item>
+        <item>607</item>
+        <item>733</item>
+        <item>844</item>
+        <item>969</item>
+        <item>1135</item>
+        <item>1319</item>
+        <item>1482</item>
+        <item>1636</item>
+        <item>1779</item>
+        <item>1930</item>
+        <item>2088</item>
+        <item>2248</item>
+        <item>2414</item>
+        <item>2612</item>
+        <item>2820</item>
+        <item>2992</item>
+        <item>3170</item>
+        <item>3373</item>
+    </string-array>
+</resources>

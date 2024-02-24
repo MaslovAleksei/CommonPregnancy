@@ -4,5 +4,5 @@ import com.margarin.commonpregnancy.domain.model.Week
 
 interface Repository {
 
-    suspend fun getWeekList() : List<Week>
+    suspend fun getWeek(weekNumber: Int) : Week
 }

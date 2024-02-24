@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="length_by_weeks">
+        <item/>
+        <item/>
+        <item/>
+        <item>0,1</item>
+        <item>0,2</item>
+        <item>0,3</item>
+        <item>1,1</item>
+        <item>1,8</item>
+        <item>2,7</item>
+        <item>3,5</item>
+        <item>4,1</item>
+        <item>5,4</item>
+        <item>7,4</item>
+        <item>8,7</item>
+        <item>10,1</item>
+        <item>11,5</item>
+        <item>13</item>
+        <item>14,2</item>
+        <item>15,3</item>
+        <item>25,8</item>
+        <item>26,7</item>
+        <item>27,8</item>
+        <item>28,9</item>
+        <item>30</item>
+        <item>34,6</item>
+        <item>35,6</item>
+        <item>36,6</item>
+        <item>37,6</item>
+        <item>38,6</item>
+        <item>39,9</item>
+        <item>41,1</item>
+        <item>42,4</item>
+        <item>43,8</item>
+        <item>45</item>
+        <item>46,2</item>
+        <item>47,4</item>
+        <item>48,6</item>
+        <item>49,8</item>
+        <item>50,7</item>
+        <item>51,2</item>
+    </string-array>
+</resources>
