@@ -5,7 +5,7 @@ import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.margarin.commonpregnancy.domain.model.Week
-import com.margarin.commonpregnancy.presentation.extensions.componentScope
+import com.margarin.commonpregnancy.presentation.utils.componentScope
 import com.margarin.commonpregnancy.presentation.utils.ContentType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

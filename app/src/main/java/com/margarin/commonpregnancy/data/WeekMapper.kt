@@ -47,3 +47,18 @@ fun Int.getChildImageResId(): Int {
     )
     return imageList[this]
 }
+
+fun Int.getMotherImageResId(): Int {
+    return when (this) {
+        in 0..3 -> R.drawable.mother_1
+        in 4..7 -> R.drawable.mother_2
+        in 8..12 -> R.drawable.mother_3
+        in 13..16 -> R.drawable.mother_4
+        in 17..20 -> R.drawable.mother_5
+        in 21..25 -> R.drawable.mother_6
+        in 26..29 -> R.drawable.mother_7
+        in 30..34 -> R.drawable.mother_8
+        in 35..39 -> R.drawable.mother_9
+        else -> R.drawable.mother_1
+    }
+}

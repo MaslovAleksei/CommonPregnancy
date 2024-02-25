@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,9 +65,6 @@ fun HomeScreenContent(component: HomeComponent) {
 
     val state by component.model.collectAsState()
     val currentState = state.week
-    val lazyListState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
-    val contentPadding = LocalConfiguration.current.screenWidthDp - ROUND_SCROLLABLE_BUTTON_DIAMETER
 
     Column(
         modifier = Modifier
@@ -73,14 +72,15 @@ fun HomeScreenContent(component: HomeComponent) {
             .verticalScroll(rememberScrollState())
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(Green, Color.White),
+                    colors = listOf(Color(currentState.color), Color.White),
                     start = Offset.Zero,
-                    end = Offset(x = 0f, y = LocalConfiguration.current.screenHeightDp.toFloat())
+                    end = Offset(
+                        x = 0f,
+                        y = LocalConfiguration.current.screenHeightDp.toFloat()
+                    )
                 )
             ),
         horizontalAlignment = Alignment.CenterHorizontally
-
-
     ) {
         Row(
             modifier = Modifier
@@ -124,8 +124,7 @@ fun HomeScreenContent(component: HomeComponent) {
         Image(
             painter = painterResource(id = currentState.childImageResId),
             contentDescription = null,
-            modifier = Modifier
-                .height(200.dp),
+            modifier = Modifier.height(200.dp),
             contentScale = ContentScale.FillHeight,
         )
         Image(
@@ -137,7 +136,7 @@ fun HomeScreenContent(component: HomeComponent) {
             contentScale = ContentScale.Crop,
             alpha = 0.1f
         )
-
+        val lazyListState = rememberLazyListState()
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -146,17 +145,17 @@ fun HomeScreenContent(component: HomeComponent) {
             contentPadding = PaddingValues(
                 top = 24.dp,
                 bottom = 24.dp,
-                start = ((contentPadding / 2).dp),
-                end = ((contentPadding / 2).dp)
+                start = (((LocalConfiguration.current.screenWidthDp - ITEM_DIAMETER) / 2).dp),
+                end = (((LocalConfiguration.current.screenWidthDp - ITEM_DIAMETER) / 2).dp)
             )
         ) {
             items(40) { number ->
-                WeekNumberCard(
+                WeekNumberItem(
                     number = number + 1,
                     setOnWeekChange = { component.changeWeek(number) },
                     state = lazyListState,
-                    scope = coroutineScope,
-                    color = Green
+                    scope = rememberCoroutineScope(),
+                    color = Color(currentState.color)
                 )
             }
             item {
@@ -177,11 +176,9 @@ fun HomeScreenContent(component: HomeComponent) {
                 }
             )
         }
-
         if (currentState.motherDetails.isNotEmpty()) {
             TextField(
-                modifier = Modifier
-                    .offset(x = 0.dp, y = (-40).dp),
+                modifier = Modifier.offset(x = 0.dp, y = (-40).dp),
                 title = stringResource(R.string.mother),
                 text = currentState.motherDetails,
                 containerColor = Purple,
@@ -193,13 +190,11 @@ fun HomeScreenContent(component: HomeComponent) {
                 }
             )
         }
-
-        if (currentState.motherDetails.isNotEmpty()) {
+        if (currentState.adviceDetails.isNotEmpty()) {
             TextField(
-                modifier = Modifier
-                    .offset(x = 0.dp, y = (-80).dp),
+                modifier = Modifier.offset(x = 0.dp, y = (-80).dp),
                 title = stringResource(R.string.advices),
-                text = currentState.motherDetails,
+                text = currentState.adviceDetails,
                 containerColor = Green,
                 onDetailsCardClick = {
                     component.onClickDetails(
@@ -214,13 +209,14 @@ fun HomeScreenContent(component: HomeComponent) {
 
 @SuppressLint("FrequentlyChangedStateReadInComposition")
 @Composable
-private fun WeekNumberCard(
+private fun WeekNumberItem(
     number: Int,
     setOnWeekChange: (Int) -> Unit,
     state: LazyListState,
     scope: CoroutineScope,
     color: Color
 ) {
+
     val itemInfo = state.layoutInfo.visibleItemsInfo.firstOrNull { it.index == number }
     var weekLabel = ""
     var backgroundColor = Color.White
@@ -244,8 +240,11 @@ private fun WeekNumberCard(
     ) {
         Card(
             modifier = Modifier
-                .size(ROUND_SCROLLABLE_BUTTON_DIAMETER.dp)
-                .clickable {
+                .size(ITEM_DIAMETER.dp)
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
                     scope.launch {
                         state.animateScrollToItem(index = number - 1)
                     }
@@ -253,7 +252,8 @@ private fun WeekNumberCard(
             shape = CircleShape,
             colors = CardDefaults.cardColors(
                 containerColor = backgroundColor,
-            ),
+
+                ),
             border = BorderStroke(1.dp, color = color)
         ) {
             Box(
@@ -329,4 +329,4 @@ private fun TextField(
     }
 }
 
-private const val ROUND_SCROLLABLE_BUTTON_DIAMETER = 66
+private const val ITEM_DIAMETER = 66
