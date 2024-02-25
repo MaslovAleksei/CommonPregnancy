@@ -15,7 +15,6 @@ dagger = "2.50"
 decompose = "2.2.2"
 mvikotlin = "3.3.0"
 
-
 [libraries]
 dagger-core = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
 dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
@@ -25,7 +24,6 @@ mvikotlin-main = { group = "com.arkivanov.mvikotlin", name = "mvikotlin-main", v
 mvikotlin-coroutines = { group = "com.arkivanov.mvikotlin", name = "mvikotlin-extensions-coroutines", version.ref = "mvikotlin" }
 decompose-core = { group = "com.arkivanov.decompose", name = "decompose", version.ref = "decompose" }
 decompose-jetpack = { group = "com.arkivanov.decompose", name = "extensions-compose-jetpack", version.ref = "decompose" }
-
 
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
