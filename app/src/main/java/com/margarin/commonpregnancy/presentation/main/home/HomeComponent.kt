@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.home
+package com.margarin.commonpregnancy.presentation.main.home
 
 import com.margarin.commonpregnancy.domain.model.Week
 import com.margarin.commonpregnancy.presentation.utils.ContentType

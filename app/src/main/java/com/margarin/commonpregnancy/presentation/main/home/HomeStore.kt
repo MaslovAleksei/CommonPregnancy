@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.home
+package com.margarin.commonpregnancy.presentation.main.home
 
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
@@ -7,9 +7,9 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.margarin.commonpregnancy.domain.GetWeekUseCase
 import com.margarin.commonpregnancy.domain.model.Week
-import com.margarin.commonpregnancy.presentation.home.HomeStore.Intent
-import com.margarin.commonpregnancy.presentation.home.HomeStore.Label
-import com.margarin.commonpregnancy.presentation.home.HomeStore.State
+import com.margarin.commonpregnancy.presentation.main.home.HomeStore.Intent
+import com.margarin.commonpregnancy.presentation.main.home.HomeStore.Label
+import com.margarin.commonpregnancy.presentation.main.home.HomeStore.State
 import com.margarin.commonpregnancy.presentation.utils.ContentType
 import kotlinx.coroutines.launch
 import javax.inject.Inject

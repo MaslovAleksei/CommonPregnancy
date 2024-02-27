@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.details
+package com.margarin.commonpregnancy.presentation.main.details
 
 import kotlinx.coroutines.flow.StateFlow
 
