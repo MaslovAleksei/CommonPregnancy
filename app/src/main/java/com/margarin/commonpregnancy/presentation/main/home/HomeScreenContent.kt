@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.home
+package com.margarin.commonpregnancy.presentation.main.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke

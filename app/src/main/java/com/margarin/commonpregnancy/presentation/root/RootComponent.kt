@@ -2,17 +2,22 @@ package com.margarin.commonpregnancy.presentation.root
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
-import com.margarin.commonpregnancy.presentation.details.DetailsComponent
-import com.margarin.commonpregnancy.presentation.home.HomeComponent
+import com.margarin.commonpregnancy.presentation.main.MainComponent
+import com.margarin.commonpregnancy.presentation.settings.SettingsComponent
+import com.margarin.commonpregnancy.presentation.todo.ToDoComponent
 
 interface RootComponent {
 
-    val stack: Value<ChildStack<*, Child>>
+    val childStack: Value<ChildStack<*, Child>>
 
-    sealed interface Child {
+    fun onMainTabClicked()
+    fun onToDoTabClicked()
+    fun onSettingsTabClicked()
 
-        data class Details(val component: DetailsComponent): Child
+    sealed class Child {
 
-        data class Home(val component: HomeComponent): Child
+        class MainChild(val component: MainComponent) : Child()
+        class ToDoChild(val component: ToDoComponent) : Child()
+        class SettingsChild(val component: SettingsComponent) : Child()
     }
 }

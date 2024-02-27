@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.details
+package com.margarin.commonpregnancy.presentation.main.details
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image

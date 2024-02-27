@@ -1,76 +1,132 @@
 package com.margarin.commonpregnancy.presentation.root
 
-import android.os.Parcelable
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.pop
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.webhistory.WebHistoryController
 import com.arkivanov.decompose.value.Value
-import com.margarin.commonpregnancy.domain.model.Week
-import com.margarin.commonpregnancy.presentation.details.DefaultDetailsComponent
-import com.margarin.commonpregnancy.presentation.home.DefaultHomeComponent
-import com.margarin.commonpregnancy.presentation.utils.ContentType
+import com.margarin.commonpregnancy.presentation.main.DefaultMainComponent
+import com.margarin.commonpregnancy.presentation.root.RootComponent.Child
+import com.margarin.commonpregnancy.presentation.root.RootComponent.Child.*
+import com.margarin.commonpregnancy.presentation.settings.DefaultSettingsComponent
+import com.margarin.commonpregnancy.presentation.todo.DefaultToDoComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
+@OptIn(ExperimentalDecomposeApi::class)
 class DefaultRootComponent @AssistedInject constructor(
-    private val detailsComponentFactory: DefaultDetailsComponent.Factory,
-    private val homeComponentFactory: DefaultHomeComponent.Factory,
-    @Assisted("componentContext") componentContext: ComponentContext
+    private val mainComponentFactory: DefaultMainComponent.Factory,
+    @Assisted("componentContext") componentContext: ComponentContext,
 ) : RootComponent, ComponentContext by componentContext {
+    private val deepLink: DeepLink = DeepLink.None
+    private val webHistoryController: WebHistoryController? = null
 
     private val navigation = StackNavigation<Config>()
 
-    override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
-        source = navigation,
-        initialConfiguration = Config.Home,
-        handleBackButton = true,
-        childFactory = ::child
-    )
-
-    private fun child(
-        config: Config,
-        componentContext: ComponentContext
-    ): RootComponent.Child {
-        return when (config) {
-            is Config.Details -> {
-                val component = detailsComponentFactory.create(
-                    week = config.week,
-                    contentType = config.contentType,
-                    onBackClicked = { navigation.pop() },
-                    componentContext = componentContext
+    @OptIn(ExperimentalDecomposeApi::class)
+    private val stack =
+        childStack(
+            source = navigation,
+            serializer = Config.serializer(),
+            initialStack = {
+                getInitialStack(
+                    webHistoryPaths = webHistoryController?.historyPaths,
+                    deepLink = deepLink
                 )
-                RootComponent.Child.Details(component)
-            }
+            },
+            childFactory = ::child,
+        )
 
-            Config.Home -> {
-                val component = homeComponentFactory.create(
-                    onDetailsClick = { week, contentType ->
-                        navigation.push(
-                            Config.Details(
-                                week = week,
-                                contentType = contentType
-                            )
-                        )
-                    },
-                    componentContext = componentContext
-                )
-                RootComponent.Child.Home(component)
-            }
-        }
+    override val childStack: Value<ChildStack<*, Child>> = stack
+
+    init {
+        webHistoryController?.attach(
+            navigator = navigation,
+            stack = stack,
+            getPath = ::getPathForConfig,
+            getConfiguration = ::getConfigForPath,
+        )
     }
 
-    sealed interface Config : Parcelable {
+    private fun child(config: Config, componentContext: ComponentContext): Child =
+        when (config) {
+            is Config.Main -> {
+                val component = mainComponentFactory.create(componentContext = componentContext)
+                MainChild(component)
+            }
 
-        @Parcelize
-        data object Home : Config
+            is Config.Settings -> SettingsChild(DefaultSettingsComponent(componentContext))
+            is Config.ToDo -> ToDoChild(DefaultToDoComponent(componentContext))
+        }
 
-        @Parcelize
-        data class Details(val week: Week, val contentType: ContentType) : Config
+    override fun onMainTabClicked() {
+        navigation.bringToFront(Config.Main)
+    }
+
+    override fun onToDoTabClicked() {
+        navigation.bringToFront(Config.ToDo)
+    }
+
+    override fun onSettingsTabClicked() {
+        navigation.bringToFront(Config.Settings)
+    }
+
+    private companion object {
+        private const val WEB_PATH_MAIN = "main"
+        private const val WEB_PATH_TODO = "todo"
+        private const val WEB_PATH_SETTINGS = "settings"
+
+        private fun getInitialStack(
+            webHistoryPaths: List<String>?,
+            deepLink: DeepLink
+        ): List<Config> =
+            webHistoryPaths
+                ?.takeUnless(List<*>::isEmpty)
+                ?.map(::getConfigForPath)
+                ?: getInitialStack(deepLink)
+
+        private fun getInitialStack(deepLink: DeepLink): List<Config> =
+            when (deepLink) {
+                is DeepLink.None -> listOf(Config.Main)
+                is DeepLink.Web -> listOf(getConfigForPath(deepLink.path))
+            }
+
+        private fun getPathForConfig(config: Config): String =
+            when (config) {
+                Config.Main -> "/$WEB_PATH_MAIN"
+                Config.Settings -> "/$WEB_PATH_SETTINGS"
+                Config.ToDo -> "/$WEB_PATH_TODO"
+            }
+
+        private fun getConfigForPath(path: String): Config =
+            when (path.removePrefix("/")) {
+                WEB_PATH_MAIN -> Config.Main
+                WEB_PATH_SETTINGS -> Config.Settings
+                WEB_PATH_TODO -> Config.ToDo
+                else -> Config.Main
+            }
+    }
+
+    @Serializable
+    private sealed interface Config {
+        @Serializable
+        data object Main : Config
+
+        @Serializable
+        data object ToDo : Config
+
+        @Serializable
+        data object Settings : Config
+    }
+
+    sealed interface DeepLink {
+        data object None : DeepLink
+        class Web(val path: String) : DeepLink
     }
 
     @AssistedFactory
