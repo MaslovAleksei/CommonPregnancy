@@ -1,6 +1,20 @@
 package com.margarin.commonpregnancy.data
 
 import com.margarin.commonpregnancy.R
+import com.margarin.commonpregnancy.data.local.model.TermDbModel
+import com.margarin.commonpregnancy.domain.model.Term
+import com.margarin.commonpregnancy.presentation.utils.toCalendar
+
+
+fun Long.toTermDbModel(): TermDbModel =
+    TermDbModel(
+        timeOfStartPregnancy = this
+    )
+
+fun TermDbModel.toEntity(): Term =
+    Term(
+        timeOfStartPregnancy = timeOfStartPregnancy.toCalendar()
+    )
 
 fun Int.getChildImageResId(): Int {
     val imageList = listOf(

@@ -5,7 +5,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import com.margarin.commonpregnancy.domain.GetWeekUseCase
+import com.margarin.commonpregnancy.domain.usecase.GetWeekUseCase
 import com.margarin.commonpregnancy.domain.model.Week
 import com.margarin.commonpregnancy.presentation.main.home.HomeStore.Intent
 import com.margarin.commonpregnancy.presentation.main.home.HomeStore.Label

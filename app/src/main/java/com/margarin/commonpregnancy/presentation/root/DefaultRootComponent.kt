@@ -21,6 +21,7 @@ import kotlinx.serialization.Serializable
 @OptIn(ExperimentalDecomposeApi::class)
 class DefaultRootComponent @AssistedInject constructor(
     private val mainComponentFactory: DefaultMainComponent.Factory,
+    private val settingsComponentFactory: DefaultSettingsComponent.Factory,
     @Assisted("componentContext") componentContext: ComponentContext,
 ) : RootComponent, ComponentContext by componentContext {
     private val deepLink: DeepLink = DeepLink.None
@@ -60,7 +61,10 @@ class DefaultRootComponent @AssistedInject constructor(
                 MainChild(component)
             }
 
-            is Config.Settings -> SettingsChild(DefaultSettingsComponent(componentContext))
+            is Config.Settings -> {
+                val component = settingsComponentFactory.create(componentContext = componentContext)
+                SettingsChild(component)
+            }
             is Config.ToDo -> ToDoChild(DefaultToDoComponent(componentContext))
         }
 

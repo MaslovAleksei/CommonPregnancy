@@ -1,5 +1,6 @@
-package com.margarin.commonpregnancy.domain
+package com.margarin.commonpregnancy.domain.usecase
 
+import com.margarin.commonpregnancy.domain.Repository
 import javax.inject.Inject
 
 class GetWeekUseCase @Inject constructor(
