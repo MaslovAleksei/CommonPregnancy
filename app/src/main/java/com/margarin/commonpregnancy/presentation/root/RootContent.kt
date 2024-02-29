@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -16,14 +17,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import com.margarin.commonpregnancy.R
 import com.margarin.commonpregnancy.presentation.main.MainContent
 import com.margarin.commonpregnancy.presentation.root.RootComponent.Child.MainChild
 import com.margarin.commonpregnancy.presentation.root.RootComponent.Child.SettingsChild
@@ -31,6 +38,9 @@ import com.margarin.commonpregnancy.presentation.root.RootComponent.Child.ToDoCh
 import com.margarin.commonpregnancy.presentation.settings.SettingsContent
 import com.margarin.commonpregnancy.presentation.todo.ToDoContent
 import com.margarin.commonpregnancy.presentation.ui.theme.CommonPregnancyTheme
+import com.margarin.commonpregnancy.presentation.ui.theme.Green
+import com.margarin.commonpregnancy.presentation.ui.theme.Pink
+import com.margarin.commonpregnancy.presentation.ui.theme.Purple
 
 @Composable
 fun RootContent(component: RootComponent, modifier: Modifier = Modifier) {
@@ -82,7 +92,11 @@ private fun BottomBar(component: RootComponent, modifier: Modifier = Modifier) {
     val childStack by component.childStack.subscribeAsState()
     val activeComponent = childStack.active.instance
 
-    NavigationBar(modifier = modifier) {
+    NavigationBar(
+        modifier = modifier.height(65.dp),
+        contentColor = Color.White.copy(alpha = 0f),
+        tonalElevation = 0.dp
+    ) {
         NavigationBarItem(
             selected = activeComponent is MainChild,
             onClick = component::onMainTabClicked,
@@ -91,10 +105,19 @@ private fun BottomBar(component: RootComponent, modifier: Modifier = Modifier) {
                     imageVector = Icons.AutoMirrored.Outlined.MenuBook,
                     contentDescription = "Counters",
                 )
-            }
+            },
+            label = { Text(text = stringResource(R.string.advice)) },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = Color.White,
+                selectedTextColor = Color.Black,
+                unselectedIconColor = Color.LightGray,
+                unselectedTextColor = Color.LightGray,
+                indicatorColor = Pink
+            )
         )
 
         NavigationBarItem(
+
             selected = activeComponent is ToDoChild,
             onClick = component::onToDoTabClicked,
             icon = {
@@ -102,7 +125,15 @@ private fun BottomBar(component: RootComponent, modifier: Modifier = Modifier) {
                     imageVector = Icons.AutoMirrored.Outlined.List,
                     contentDescription = "Cards",
                 )
-            }
+            },
+            label = { Text(text = stringResource(R.string.list)) },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = Color.White,
+                selectedTextColor = Color.Black,
+                unselectedIconColor = Color.LightGray,
+                unselectedTextColor = Color.LightGray,
+                indicatorColor = Green
+            )
         )
 
         NavigationBarItem(
@@ -113,7 +144,15 @@ private fun BottomBar(component: RootComponent, modifier: Modifier = Modifier) {
                     imageVector = Icons.Outlined.Settings,
                     contentDescription = "Multi-Pane",
                 )
-            }
+            },
+            label = { Text(text = stringResource(R.string.settings)) },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = Color.White,
+                selectedTextColor = Color.Black,
+                unselectedIconColor = Color.LightGray,
+                unselectedTextColor = Color.LightGray,
+                indicatorColor = Purple
+            )
         )
     }
 }

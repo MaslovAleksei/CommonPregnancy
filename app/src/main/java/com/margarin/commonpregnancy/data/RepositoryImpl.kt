@@ -2,13 +2,16 @@ package com.margarin.commonpregnancy.data
 
 import android.content.Context
 import com.margarin.commonpregnancy.R
+import com.margarin.commonpregnancy.data.local.db.PregnancyDao
 import com.margarin.commonpregnancy.domain.Repository
+import com.margarin.commonpregnancy.domain.model.Term
 import com.margarin.commonpregnancy.domain.model.Week
 import com.margarin.commonpregnancy.presentation.ui.theme.colorList
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val pregnancyDao: PregnancyDao
 ) : Repository {
 
     override suspend fun getWeek(weekNumber: Int) = Week(
@@ -22,4 +25,12 @@ class RepositoryImpl @Inject constructor(
         motherImageResId = weekNumber.getMotherImageResId(),
         color = colorList[weekNumber]
     )
+
+    override suspend fun getTimeOfStartPregnancy(): Term? {
+        return pregnancyDao.getTimeOfStartPregnancy()?.toEntity()
+    }
+
+    override suspend fun saveTimeOfStartPregnancy(timeInMillis: Long) {
+        pregnancyDao.saveTimeOfStartPregnancy(timeInMillis.toTermDbModel())
+    }
 }
