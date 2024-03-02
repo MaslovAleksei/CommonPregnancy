@@ -34,4 +34,6 @@
     <string name="support">Поддержка</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="support_desc">Напишите нам Ваше мнение о приложении, что нужно добавить в приложение, а также скажите, что Вам в нем нравится</string>
+    <string name="current_week">текущая неделя</string>
+    <string name="trimester">триместр</string>
 </resources>

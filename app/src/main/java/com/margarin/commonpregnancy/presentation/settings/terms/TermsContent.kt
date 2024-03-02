@@ -111,21 +111,21 @@ fun TermsContent(component: TermsComponent) {
                 }
             )
             TextDateRow(
-                text = stringResource(R.string.date_of_birth),
-                date = dateOfBirth.formattedFullDate(),
-                onConfirmDateClick = { dateOfBirth ->
-                    val lastMenstruation = dateOfBirth.toCalendar().apply {
-                        add(Calendar.DAY_OF_YEAR, -280)
-                    }.timeInMillis
-                    component.onChangeTerm(timeStamp = lastMenstruation)
-                }
-            )
-            TextDateRow(
                 text = stringResource(R.string.date_of_conception),
                 date = dateOfConception.formattedFullDate(),
                 onConfirmDateClick = { dateOfConception ->
                     val lastMenstruation = dateOfConception.toCalendar().apply {
                         add(Calendar.DAY_OF_YEAR, -14)
+                    }.timeInMillis
+                    component.onChangeTerm(timeStamp = lastMenstruation)
+                }
+            )
+            TextDateRow(
+                text = stringResource(R.string.date_of_birth),
+                date = dateOfBirth.formattedFullDate(),
+                onConfirmDateClick = { dateOfBirth ->
+                    val lastMenstruation = dateOfBirth.toCalendar().apply {
+                        add(Calendar.DAY_OF_YEAR, -280)
                     }.timeInMillis
                     component.onChangeTerm(timeStamp = lastMenstruation)
                 }
@@ -234,7 +234,8 @@ private fun DatePickerDialog(
                 Text(stringResource(R.string.cancel))
             }
         },
-        colors = DatePickerDefaults.colors(containerColor = Color.White)
+        colors = DatePickerDefaults.colors(containerColor = Color.White),
+        tonalElevation = 0.dp
     ) {
         DatePicker(state = datePickerState)
     }

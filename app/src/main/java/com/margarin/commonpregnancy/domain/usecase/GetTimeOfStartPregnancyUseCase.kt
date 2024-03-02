@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetTimeOfStartPregnancyUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    suspend operator fun invoke() = repository.getTimeOfStartPregnancy()
+    operator fun invoke() = repository.getTimeOfStartPregnancy()
 }

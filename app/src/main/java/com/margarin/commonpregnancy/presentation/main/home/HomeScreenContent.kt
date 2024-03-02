@@ -1,12 +1,11 @@
 package com.margarin.commonpregnancy.presentation.main.home
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,9 +19,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerDefaults
+import androidx.compose.foundation.pager.PagerSnapDistance
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,39 +34,57 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.margarin.commonpregnancy.R
+import com.margarin.commonpregnancy.domain.model.Term
+import com.margarin.commonpregnancy.presentation.ui.theme.Blue
 import com.margarin.commonpregnancy.presentation.ui.theme.Green
 import com.margarin.commonpregnancy.presentation.ui.theme.Pink
 import com.margarin.commonpregnancy.presentation.ui.theme.Purple
 import com.margarin.commonpregnancy.presentation.utils.ContentType
+import com.margarin.commonpregnancy.presentation.utils.formattedDayMonth
+import com.margarin.commonpregnancy.presentation.utils.toCalendar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.util.Calendar
+import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreenContent(component: HomeComponent) {
 
     val state by component.model.collectAsState()
-    val currentState = state.week
+    val currentWeek = state.week
+    val term = state.term
+    val currentDate = Calendar.getInstance(Locale.getDefault())
+    val daysOfYearPassed =
+        (currentDate.timeInMillis - term.timeOfStartPregnancy.timeInMillis).toCalendar()
+            .get(Calendar.DAY_OF_YEAR) - 1
+    val weeksOfYearPassed = daysOfYearPassed / 7
 
     Column(
         modifier = Modifier
@@ -72,7 +92,7 @@ fun HomeScreenContent(component: HomeComponent) {
             .verticalScroll(rememberScrollState())
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(Color(currentState.color), Color.White),
+                    colors = listOf(Color(currentWeek.color), Color.White),
                     start = Offset.Zero,
                     end = Offset(
                         x = 0f,
@@ -89,12 +109,12 @@ fun HomeScreenContent(component: HomeComponent) {
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if (currentState.weight.isNotEmpty()) {
+            if (currentWeek.weight.isNotEmpty()) {
                 Column(
                     modifier = Modifier
                 ) {
                     Text(
-                        text = currentState.weight + " " + stringResource(R.string.gram),
+                        text = currentWeek.weight + " " + stringResource(R.string.gram),
                         style = MaterialTheme.typography.titleLarge
                             .copy(fontWeight = FontWeight.Bold),
                         color = MaterialTheme.colorScheme.background
@@ -109,7 +129,7 @@ fun HomeScreenContent(component: HomeComponent) {
                     horizontalAlignment = Alignment.End
                 ) {
                     Text(
-                        text = currentState.length + " " + stringResource(R.string.santimeter),
+                        text = currentWeek.length + " " + stringResource(R.string.santimeter),
                         style = MaterialTheme.typography.titleLarge
                             .copy(fontWeight = FontWeight.Bold),
                         color = MaterialTheme.colorScheme.background
@@ -122,7 +142,7 @@ fun HomeScreenContent(component: HomeComponent) {
             }
         }
         Image(
-            painter = painterResource(id = currentState.childImageResId),
+            painter = painterResource(id = currentWeek.childImageResId),
             contentDescription = null,
             modifier = Modifier.height(200.dp),
             contentScale = ContentScale.FillHeight,
@@ -136,69 +156,88 @@ fun HomeScreenContent(component: HomeComponent) {
             contentScale = ContentScale.Crop,
             alpha = 0.1f
         )
-        val lazyListState = rememberLazyListState()
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            state = lazyListState,
-            flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
-            contentPadding = PaddingValues(
-                top = 24.dp,
-                bottom = 24.dp,
-                start = (((LocalConfiguration.current.screenWidthDp - ITEM_DIAMETER) / 2).dp),
-                end = (((LocalConfiguration.current.screenWidthDp - ITEM_DIAMETER) / 2).dp)
-            )
-        ) {
-            items(40) { number ->
-                WeekNumberItem(
-                    number = number + 1,
-                    setOnWeekChange = { component.changeWeek(number) },
-                    state = lazyListState,
-                    scope = rememberCoroutineScope(),
-                    color = Color(currentState.color)
-                )
-            }
-            item {
-                Box(modifier = Modifier.width(20.dp))
+
+        val pagerState = rememberPagerState { 40 }
+        val fling = PagerDefaults.flingBehavior(
+            state = pagerState,
+            pagerSnapDistance = PagerSnapDistance.atMost(40)
+        )
+        LaunchedEffect(key1 = term) {
+            snapshotFlow { weeksOfYearPassed }.collect {
+                pagerState.scrollToPage(it)
             }
         }
-        if (currentState.childDetails.isNotEmpty()) {
-            TextField(
+        LaunchedEffect(key1 = pagerState) {
+            snapshotFlow { pagerState.currentPage }.collect {
+                component.changeWeek(it)
+            }
+        }
+        HorizontalPager(
+            state = pagerState,
+            pageSpacing = 8.dp,
+            pageSize = PageSize.Fixed(ITEM_DIAMETER.dp),
+            flingBehavior = fling,
+            contentPadding = PaddingValues(
+                vertical = 24.dp,
+                horizontal = ((LocalConfiguration.current.screenWidthDp - ITEM_DIAMETER) / 2).dp
+            )
+        ) { weekNumber ->
+            WeekNumberItem(
+                number = weekNumber,
+                pagerState = pagerState,
+                scope = rememberCoroutineScope(),
+                color = Color(currentWeek.color),
+                currentWeek = weeksOfYearPassed
+            )
+        }
+
+        var offset = 0
+        if (currentWeek.isCurrent) {
+            ProgressField(
                 modifier = Modifier,
+                term = term,
+                daysOfYearPassed = daysOfYearPassed,
+                weeksOfYearPassed = weeksOfYearPassed
+            )
+            offset = -40
+        }
+        if (currentWeek.childDetails.isNotEmpty()) {
+            TextField(
+                modifier = Modifier.offset(x = 0.dp, y = offset.dp),
                 title = stringResource(R.string.baby),
-                text = currentState.childDetails,
+                text = currentWeek.childDetails,
                 containerColor = Pink,
                 onDetailsCardClick = {
                     component.onClickDetails(
-                        week = currentState,
+                        week = currentWeek,
                         contentType = ContentType.ChildDetails
                     )
                 }
             )
         }
-        if (currentState.motherDetails.isNotEmpty()) {
+        if (currentWeek.motherDetails.isNotEmpty()) {
             TextField(
-                modifier = Modifier.offset(x = 0.dp, y = (-40).dp),
+                modifier = Modifier.offset(x = 0.dp, y = (offset - 40).dp),
                 title = stringResource(R.string.mother),
-                text = currentState.motherDetails,
+                text = currentWeek.motherDetails,
                 containerColor = Purple,
                 onDetailsCardClick = {
                     component.onClickDetails(
-                        week = currentState,
+                        week = currentWeek,
                         contentType = ContentType.MotherDetails
                     )
                 }
             )
         }
-        if (currentState.adviceDetails.isNotEmpty()) {
+        if (currentWeek.adviceDetails.isNotEmpty()) {
             TextField(
-                modifier = Modifier.offset(x = 0.dp, y = (-80).dp),
+                modifier = Modifier.offset(x = 0.dp, y = (offset - 80).dp),
                 title = stringResource(R.string.advices),
-                text = currentState.adviceDetails,
+                text = currentWeek.adviceDetails,
                 containerColor = Green,
                 onDetailsCardClick = {
                     component.onClickDetails(
-                        week = currentState,
+                        week = currentWeek,
                         contentType = ContentType.AdviceDetails
                     )
                 }
@@ -207,70 +246,87 @@ fun HomeScreenContent(component: HomeComponent) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("FrequentlyChangedStateReadInComposition")
 @Composable
 private fun WeekNumberItem(
     number: Int,
-    setOnWeekChange: (Int) -> Unit,
-    state: LazyListState,
+    pagerState: PagerState,
     scope: CoroutineScope,
-    color: Color
+    color: Color,
+    currentWeek: Int
 ) {
 
-    val itemInfo = state.layoutInfo.visibleItemsInfo.firstOrNull { it.index == number }
     var weekLabel = ""
-    var backgroundColor = Color.White
+    var backgroundColor = color.copy(alpha = 0.05f)
     var textColor = color
+    var strokeWidth = 1.dp
 
-    itemInfo?.let {
-        val delta = it.size / 1.8
-        val center = state.layoutInfo.viewportEndOffset / 2
-        val childCenter = it.offset + it.size / 2
-        val target = (childCenter - center).toFloat()
-        if (target in -delta..delta) {
-            setOnWeekChange(number)
-            weekLabel = stringResource(R.string.week)
-            backgroundColor = color
-            textColor = Color.White
+    if (number == pagerState.currentPage) {
+        weekLabel = stringResource(R.string.week)
+        backgroundColor = color
+        textColor = Color.White
+
+        if (number == currentWeek) {
+            weekLabel = stringResource(R.string.current_week)
         }
+    } else if (number == currentWeek) {
+        weekLabel = stringResource(R.string.current_week)
+        backgroundColor = color
+        textColor = Color.White
+        strokeWidth = 4.dp
     }
     Column(
-        modifier = Modifier,
+        modifier = Modifier
+            .height(110.dp)
+            .graphicsLayer {
+                val pageOffset = (
+                        (pagerState.currentPage - number) + pagerState
+                            .currentPageOffsetFraction
+                        )
+
+                val size = if (pageOffset in -0.1f..0.1f) 1f else 0.85f
+                scaleX = size
+                scaleY = size
+            },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Card(
+        Box(
             modifier = Modifier
-                .size(ITEM_DIAMETER.dp)
+                .size(width = ITEM_DIAMETER.dp, height = ITEM_DIAMETER.dp)
                 .clickable(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() }
                 ) {
                     scope.launch {
-                        state.animateScrollToItem(index = number - 1)
+                        pagerState.animateScrollToPage(page = number)
                     }
-                },
-            shape = CircleShape,
-            colors = CardDefaults.cardColors(
-                containerColor = backgroundColor,
-
-                ),
-            border = BorderStroke(1.dp, color = color)
-        ) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = number.toString(),
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = textColor
+                }
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(backgroundColor.copy(alpha = 0.05f), backgroundColor)
+                    ),
+                    shape = CircleShape
                 )
-            }
+                .clip(CircleShape)
+                .border(
+                    width = strokeWidth,
+                    color = color,
+                    shape = CircleShape
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = (number + 1).toString(),
+                style = MaterialTheme.typography.headlineLarge,
+                color = textColor
+            )
         }
         Text(
             text = weekLabel,
             style = MaterialTheme.typography.bodyMedium,
-            color = color
+            color = color,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -329,4 +385,91 @@ private fun TextField(
     }
 }
 
-private const val ITEM_DIAMETER = 66
+@Composable
+private fun ProgressField(
+    modifier: Modifier,
+    term: Term,
+    daysOfYearPassed: Int,
+    weeksOfYearPassed: Int
+) {
+
+    val daysOfWeekPassed = daysOfYearPassed % 7
+    val currentTrimester = when (weeksOfYearPassed) {
+        in 0..13 -> 1
+        in 14..26 -> 2
+        in 27..42 -> 3
+        else -> 0
+    }
+    val dateOfBirth = (term.timeOfStartPregnancy.timeInMillis +
+            PREGNANCY_DURATION.toLong() * 24 * 60 * 60 * 1000).toCalendar()
+    val weeksOfYearLeft = (PREGNANCY_DURATION - daysOfYearPassed) / 7
+    val daysOfWeekLeft = (PREGNANCY_DURATION - daysOfYearPassed) % 7
+
+    val stringTimePassed = "Прошло недель: $weeksOfYearPassed, дней: $daysOfWeekPassed"
+    val stringTrimester = currentTrimester.toString() + " " + stringResource(R.string.trimester)
+    val stringDateOfBirth =
+        "${stringResource(id = R.string.date_of_birth)}: ${dateOfBirth.formattedDayMonth()}"
+    val stringTimeLeft = "Осталось недель: $weeksOfYearLeft, дней: $daysOfWeekLeft"
+
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Blue,
+            contentColor = Color.White
+        )
+
+    ) {
+        Column(
+            modifier = Modifier
+                .height(150.dp)
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Text(
+                    text = stringTrimester,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = stringTimePassed,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+            }
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+                    .height(8.dp),
+                progress = { daysOfYearPassed.toFloat() / PREGNANCY_DURATION.toFloat() },
+                color = Color.White,
+                strokeCap = StrokeCap.Round,
+                trackColor = Color.White.copy(alpha = 0.3f),
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Text(
+                    text = stringDateOfBirth,
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Text(
+                    text = stringTimeLeft,
+                    style = MaterialTheme.typography.bodySmall
+                )
+
+            }
+        }
+    }
+}
+
+private const val ITEM_DIAMETER = 70
+private const val PREGNANCY_DURATION = 280

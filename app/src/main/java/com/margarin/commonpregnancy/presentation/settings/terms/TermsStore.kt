@@ -62,9 +62,16 @@ class TermsStoreFactory @Inject constructor(
     private inner class BootstrapperImpl : CoroutineBootstrapper<Action>() {
         override fun invoke() {
             scope.launch(Dispatchers.IO) {
-                val timestamp = getTimeOfStartPregnancyUseCase()?.timeOfStartPregnancy?.timeInMillis
+                val term = getTimeOfStartPregnancyUseCase()
                 scope.launch(Dispatchers.Main) {
-                    timestamp?.let { dispatch(Action.TimeStampLoaded(it, false)) }
+                   term.collect { term ->
+                        dispatch(
+                            Action.TimeStampLoaded(
+                                timeStamp = term.timeOfStartPregnancy.timeInMillis,
+                                isTermChanged = false
+                            )
+                        )
+                    }
                 }
             }
         }

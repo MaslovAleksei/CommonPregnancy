@@ -14,5 +14,6 @@ data class Week (
     val adviceDetails: String = "",
     val childImageResId: Int = R.drawable.week_1_3,
     val motherImageResId: Int = R.drawable.mother_1,
-    val color: Long = 0
+    val color: Long = 0,
+    val isCurrent: Boolean = false
 ): Parcelable
