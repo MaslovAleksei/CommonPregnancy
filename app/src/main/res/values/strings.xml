@@ -36,4 +36,7 @@
     <string name="support_desc">Напишите нам Ваше мнение о приложении, что нужно добавить в приложение, а также скажите, что Вам в нем нравится</string>
     <string name="current_week">текущая неделя</string>
     <string name="trimester">триместр</string>
+    <string name="weeks_passed">Прошло недель: </string>
+    <string name="days">дней: </string>
+    <string name="weeks_left">Осталось недель: </string>
 </resources>

@@ -192,7 +192,7 @@ fun HomeScreenContent(component: HomeComponent) {
         }
 
         var offset = 0
-        if (currentWeek.isCurrent) {
+        if (currentWeek.id == weeksOfYearPassed) {
             ProgressField(
                 modifier = Modifier,
                 term = term,
@@ -399,17 +399,19 @@ private fun ProgressField(
         in 14..26 -> 2
         in 27..42 -> 3
         else -> 0
-    }
+    }.toString()
     val dateOfBirth = (term.timeOfStartPregnancy.timeInMillis +
             PREGNANCY_DURATION.toLong() * 24 * 60 * 60 * 1000).toCalendar()
     val weeksOfYearLeft = (PREGNANCY_DURATION - daysOfYearPassed) / 7
     val daysOfWeekLeft = (PREGNANCY_DURATION - daysOfYearPassed) % 7
 
-    val stringTimePassed = "Прошло недель: $weeksOfYearPassed, дней: $daysOfWeekPassed"
-    val stringTrimester = currentTrimester.toString() + " " + stringResource(R.string.trimester)
-    val stringDateOfBirth =
-        "${stringResource(id = R.string.date_of_birth)}: ${dateOfBirth.formattedDayMonth()}"
-    val stringTimeLeft = "Осталось недель: $weeksOfYearLeft, дней: $daysOfWeekLeft"
+    val stringTimePassed = stringResource(id = R.string.weeks_passed) + " " + weeksOfYearPassed +
+            ", " + stringResource(id = R.string.days) + " " + daysOfWeekPassed
+    val stringTrimester = currentTrimester + " " + stringResource(R.string.trimester)
+    val stringDateOfBirth = stringResource(id = R.string.date_of_birth) + ": " +
+            dateOfBirth.formattedDayMonth()
+    val stringTimeLeft = stringResource(id = R.string.weeks_left) + " " + weeksOfYearLeft + ", " +
+            stringResource(id = R.string.days) + " " + daysOfWeekLeft
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -465,7 +467,6 @@ private fun ProgressField(
                     text = stringTimeLeft,
                     style = MaterialTheme.typography.bodySmall
                 )
-
             }
         }
     }

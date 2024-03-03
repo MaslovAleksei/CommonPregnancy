@@ -7,12 +7,8 @@ import com.margarin.commonpregnancy.domain.Repository
 import com.margarin.commonpregnancy.domain.model.Term
 import com.margarin.commonpregnancy.domain.model.Week
 import com.margarin.commonpregnancy.presentation.ui.theme.colorList
-import com.margarin.commonpregnancy.presentation.utils.toCalendar
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import java.util.Calendar
-import java.util.Locale
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
@@ -29,8 +25,7 @@ class RepositoryImpl @Inject constructor(
         adviceDetails = context.resources.getStringArray(R.array.advices_by_weeks)[weekNumber],
         childImageResId = weekNumber.getChildImageResId(),
         motherImageResId = weekNumber.getMotherImageResId(),
-        color = colorList[weekNumber],
-        isCurrent = defineIsWeekCurrent(weekNumber)
+        color = colorList[weekNumber]
     )
 
     override fun getTimeOfStartPregnancy(): Flow<Term> {
@@ -39,20 +34,5 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun saveTimeOfStartPregnancy(timeInMillis: Long) {
         pregnancyDao.saveTimeOfStartPregnancy(timeInMillis.toTermDbModel())
-    }
-
-    private suspend fun defineIsWeekCurrent(
-        weekNumber: Int
-    ): Boolean {
-        val todayDate = Calendar.getInstance(Locale.getDefault())
-        var startOfPregnancy: Calendar? = null
-        getTimeOfStartPregnancy().first { term ->
-            startOfPregnancy = term.timeOfStartPregnancy
-            true
-        }
-        val currentWeek = startOfPregnancy?.let {
-            (todayDate.timeInMillis - it.timeInMillis).toCalendar().get(Calendar.DAY_OF_YEAR) / 7
-        }
-        return currentWeek == weekNumber
     }
 }
