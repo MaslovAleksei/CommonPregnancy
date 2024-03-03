@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.main.home
+package com.margarin.commonpregnancy.presentation.main.home.advices
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -75,15 +75,16 @@ import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreenContent(component: HomeComponent) {
+fun AdvicesScreenContent(component: AdvicesComponent) {
 
     val state by component.model.collectAsState()
     val currentWeek = state.week
     val term = state.term
     val currentDate = Calendar.getInstance(Locale.getDefault())
-    val daysOfYearPassed =
+    val daysOfYearPassed = if (term.timeOfStartPregnancy.timeInMillis != 0L) {
         (currentDate.timeInMillis - term.timeOfStartPregnancy.timeInMillis).toCalendar()
             .get(Calendar.DAY_OF_YEAR) - 1
+    } else 0
     val weeksOfYearPassed = daysOfYearPassed / 7
 
     Column(
@@ -129,7 +130,7 @@ fun HomeScreenContent(component: HomeComponent) {
                     horizontalAlignment = Alignment.End
                 ) {
                     Text(
-                        text = currentWeek.length + " " + stringResource(R.string.santimeter),
+                        text = currentWeek.length + " " + stringResource(R.string.centimetre),
                         style = MaterialTheme.typography.titleLarge
                             .copy(fontWeight = FontWeight.Bold),
                         color = MaterialTheme.colorScheme.background
@@ -164,7 +165,9 @@ fun HomeScreenContent(component: HomeComponent) {
         )
         LaunchedEffect(key1 = term) {
             snapshotFlow { weeksOfYearPassed }.collect {
-                pagerState.scrollToPage(it)
+                if (it in 0..39) {
+                    pagerState.scrollToPage(it)
+                }
             }
         }
         LaunchedEffect(key1 = pagerState) {

@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.main.details
+package com.margarin.commonpregnancy.presentation.main.home.details
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -75,7 +75,7 @@ fun DetailsContent(component: DetailsComponent) {
             Content(
                 modifier = Modifier,
                 component = component,
-                imageResId = null,
+                imageResId = R.drawable.todo_list_image,
                 weekNumber = currentState.week.id + 1,
                 title = stringResource(id = R.string.advices),
                 text = currentState.week.adviceDetails,

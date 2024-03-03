@@ -11,4 +11,6 @@ interface Repository {
     fun getTimeOfStartPregnancy() : Flow<Term>
 
     suspend fun saveTimeOfStartPregnancy(timeInMillis: Long)
+
+    suspend fun checkIsConfigured() : Boolean
 }

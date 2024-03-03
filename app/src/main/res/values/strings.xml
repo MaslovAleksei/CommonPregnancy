@@ -19,7 +19,7 @@
     <string name="weight">вес</string>
     <string name="length">длина</string>
     <string name="baby">Малыш</string>
-    <string name="santimeter">см</string>
+    <string name="centimetre">см</string>
     <string name="gram">г</string>
     <string name="settings">Настройки</string>
     <string name="change_term">Изменить срок</string>
@@ -39,4 +39,6 @@
     <string name="weeks_passed">Прошло недель: </string>
     <string name="days">дней: </string>
     <string name="weeks_left">Осталось недель: </string>
+    <string name="specify_date">Укажите дату</string>
+    <string name="license_agreement">Я согласен с правилами и политикой конфиденциальности</string>
 </resources>

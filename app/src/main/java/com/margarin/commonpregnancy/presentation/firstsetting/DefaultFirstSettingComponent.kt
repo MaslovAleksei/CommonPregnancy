@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.settings.terms
+package com.margarin.commonpregnancy.presentation.firstsetting
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
@@ -12,12 +12,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class DefaultTermsComponent @AssistedInject constructor(
-    private val storeFactory: TermsStoreFactory,
+class DefaultFirstSettingComponent @AssistedInject constructor(
+    private val storeFactory: FirstSettingStoreFactory,
     @Assisted("onSaveChangesClicked") private val onSaveChangesClicked: () -> Unit,
-    @Assisted("onBackClicked") private val onBackClicked: () -> Unit,
     @Assisted("componentContext") componentContext: ComponentContext
-) : TermsComponent, ComponentContext by componentContext {
+) : FirstSettingComponent, ComponentContext by componentContext {
 
     private val store = instanceKeeper.getStore { storeFactory.create() }
     private val scope = componentScope()
@@ -26,11 +25,7 @@ class DefaultTermsComponent @AssistedInject constructor(
         scope.launch {
             store.labels.collect {
                 when (it) {
-                    TermsStore.Label.ClickBack -> {
-                        onBackClicked()
-                    }
-
-                    TermsStore.Label.SaveChanges -> {
+                    FirstSettingStore.Label.SaveChanges -> {
                         onSaveChangesClicked()
                     }
                 }
@@ -39,18 +34,18 @@ class DefaultTermsComponent @AssistedInject constructor(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override val model: StateFlow<TermsStore.State> = store.stateFlow
+    override val model: StateFlow<FirstSettingStore.State> = store.stateFlow
 
     override fun onSaveChanges(timeStamp: Long) {
-        store.accept(TermsStore.Intent.SaveChanges(timeStamp))
+        store.accept(FirstSettingStore.Intent.SaveChanges(timeStamp))
     }
 
     override fun onChangeTerm(timeStamp: Long) {
-        store.accept(TermsStore.Intent.ChangeTerm(timeStamp))
+        store.accept(FirstSettingStore.Intent.ChangeTerm(timeStamp))
     }
 
-    override fun onClickBack() {
-        store.accept(TermsStore.Intent.ClickBack)
+    override fun onChangeAgreementCheckState() {
+        store.accept(FirstSettingStore.Intent.ChangeAgreementCheckState)
     }
 
     @AssistedFactory
@@ -58,8 +53,7 @@ class DefaultTermsComponent @AssistedInject constructor(
 
         fun create(
             @Assisted("onSaveChangesClicked") onSaveChangesClicked: () -> Unit,
-            @Assisted("onBackClicked") onBackClicked: () -> Unit,
             @Assisted("componentContext") componentContext: ComponentContext
-        ): DefaultTermsComponent
+        ): DefaultFirstSettingComponent
     }
 }

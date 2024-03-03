@@ -16,4 +16,7 @@ interface PregnancyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveTimeOfStartPregnancy(termDbModel: TermDbModel)
 
+    @Query("SELECT EXISTS (SELECT * FROM term WHERE id=0 LIMIT 1)")
+    suspend fun checkIsConfigured() : Boolean
+
 }

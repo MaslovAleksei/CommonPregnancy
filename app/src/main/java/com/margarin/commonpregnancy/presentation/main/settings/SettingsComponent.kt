@@ -1,9 +1,9 @@
-package com.margarin.commonpregnancy.presentation.settings
+package com.margarin.commonpregnancy.presentation.main.settings
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
-import com.margarin.commonpregnancy.presentation.settings.setting.SettingComponent
-import com.margarin.commonpregnancy.presentation.settings.terms.TermsComponent
+import com.margarin.commonpregnancy.presentation.main.settings.setting.SettingComponent
+import com.margarin.commonpregnancy.presentation.main.settings.terms.TermsComponent
 
 interface SettingsComponent {
 

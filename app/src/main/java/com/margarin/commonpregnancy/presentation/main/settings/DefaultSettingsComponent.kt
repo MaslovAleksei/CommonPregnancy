@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.settings
+package com.margarin.commonpregnancy.presentation.main.settings
 
 import android.os.Parcelable
 import com.arkivanov.decompose.ComponentContext
@@ -8,8 +8,8 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
-import com.margarin.commonpregnancy.presentation.settings.setting.DefaultSettingComponent
-import com.margarin.commonpregnancy.presentation.settings.terms.DefaultTermsComponent
+import com.margarin.commonpregnancy.presentation.main.settings.setting.DefaultSettingComponent
+import com.margarin.commonpregnancy.presentation.main.settings.terms.DefaultTermsComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

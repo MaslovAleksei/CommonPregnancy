@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.main.home
+package com.margarin.commonpregnancy.presentation.main.home.advices
 
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
@@ -9,15 +9,15 @@ import com.margarin.commonpregnancy.domain.model.Term
 import com.margarin.commonpregnancy.domain.model.Week
 import com.margarin.commonpregnancy.domain.usecase.GetTimeOfStartPregnancyUseCase
 import com.margarin.commonpregnancy.domain.usecase.GetWeekUseCase
-import com.margarin.commonpregnancy.presentation.main.home.HomeStore.Intent
-import com.margarin.commonpregnancy.presentation.main.home.HomeStore.Label
-import com.margarin.commonpregnancy.presentation.main.home.HomeStore.State
+import com.margarin.commonpregnancy.presentation.main.home.advices.AdvicesStore.Intent
+import com.margarin.commonpregnancy.presentation.main.home.advices.AdvicesStore.Label
+import com.margarin.commonpregnancy.presentation.main.home.advices.AdvicesStore.State
 import com.margarin.commonpregnancy.presentation.utils.ContentType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-interface HomeStore : Store<Intent, State, Label> {
+interface AdvicesStore : Store<Intent, State, Label> {
 
     sealed interface Intent {
         data class ChangeWeek(val weekNumber: Int) : Intent
@@ -34,14 +34,14 @@ interface HomeStore : Store<Intent, State, Label> {
     }
 }
 
-class HomeStoreFactory @Inject constructor(
+class AdvicesStoreFactory @Inject constructor(
     private val storeFactory: StoreFactory,
     private val getWeekUseCase: GetWeekUseCase,
     private val getTimeOfStartPregnancyUseCase: GetTimeOfStartPregnancyUseCase
 ) {
 
-    fun create(): HomeStore =
-        object : HomeStore, Store<Intent, State, Label> by storeFactory.create(
+    fun create(): AdvicesStore =
+        object : AdvicesStore, Store<Intent, State, Label> by storeFactory.create(
             name = "HomeStore",
             initialState = State(week = Week(), term = Term()),
             bootstrapper = BootstrapperImpl(),

@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.settings.terms
+package com.margarin.commonpregnancy.presentation.main.settings.terms
 
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
@@ -7,9 +7,9 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.margarin.commonpregnancy.domain.usecase.GetTimeOfStartPregnancyUseCase
 import com.margarin.commonpregnancy.domain.usecase.SaveTimeOfStartPregnancyUseCase
-import com.margarin.commonpregnancy.presentation.settings.terms.TermsStore.Intent
-import com.margarin.commonpregnancy.presentation.settings.terms.TermsStore.Label
-import com.margarin.commonpregnancy.presentation.settings.terms.TermsStore.State
+import com.margarin.commonpregnancy.presentation.main.settings.terms.TermsStore.Intent
+import com.margarin.commonpregnancy.presentation.main.settings.terms.TermsStore.Label
+import com.margarin.commonpregnancy.presentation.main.settings.terms.TermsStore.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject

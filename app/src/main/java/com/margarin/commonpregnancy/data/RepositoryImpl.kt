@@ -35,4 +35,8 @@ class RepositoryImpl @Inject constructor(
     override suspend fun saveTimeOfStartPregnancy(timeInMillis: Long) {
         pregnancyDao.saveTimeOfStartPregnancy(timeInMillis.toTermDbModel())
     }
+
+    override suspend fun checkIsConfigured(): Boolean {
+        return pregnancyDao.checkIsConfigured()
+    }
 }
