@@ -2,7 +2,6 @@ package com.margarin.commonpregnancy.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
@@ -10,6 +9,7 @@ val Pink40 = Color(0xFF7D5260)
 val Pink = Color(0xFFFD9F9F)
 val Purple = Color(0xFFA777D6)
 val Green = Color(0xFF74DBA1)
+val Blue = Color(0xFF82C3EC)
 
 val colorList = listOf(
     0xFFF9908E,

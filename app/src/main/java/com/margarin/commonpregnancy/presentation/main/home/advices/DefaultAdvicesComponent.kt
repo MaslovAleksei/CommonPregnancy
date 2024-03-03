@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.main.details
+package com.margarin.commonpregnancy.presentation.main.home.advices
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
@@ -14,23 +14,24 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class DefaultDetailsComponent @AssistedInject constructor(
-    private val storeFactory: DetailsStoreFactory,
-    @Assisted("week") private val week: Week,
-    @Assisted("contentType") private val contentType: ContentType,
-    @Assisted("onBackClicked") private val onBackClicked: () -> Unit,
+class DefaultAdvicesComponent @AssistedInject constructor(
+    private val storeFactory: AdvicesStoreFactory,
+    @Assisted("onDetailsClick") private val onDetailsClick: (Week, ContentType) -> Unit,
     @Assisted("componentContext") componentContext: ComponentContext
-) : DetailsComponent, ComponentContext by componentContext {
+) : AdvicesComponent, ComponentContext by componentContext {
 
-    private val store = instanceKeeper.getStore { storeFactory.create(week, contentType) }
+    private val store = instanceKeeper.getStore { storeFactory.create() }
     private val scope = componentScope()
 
     init {
         scope.launch {
             store.labels.collect {
                 when (it) {
-                    DetailsStore.Label.ClickBack -> {
-                        onBackClicked()
+                    is AdvicesStore.Label.ClickOnDetails -> {
+                        onDetailsClick(
+                            it.week,
+                            it.contentType
+                        )
                     }
                 }
             }
@@ -38,20 +39,22 @@ class DefaultDetailsComponent @AssistedInject constructor(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override val model: StateFlow<DetailsStore.State> = store.stateFlow
+    override val model: StateFlow<AdvicesStore.State> = store.stateFlow
 
-    override fun onClickBack() {
-        store.accept(DetailsStore.Intent.ClickBack)
+    override fun changeWeek(weekNumber: Int) {
+        store.accept(AdvicesStore.Intent.ChangeWeek(weekNumber))
+    }
+
+    override fun onClickDetails(week: Week, contentType: ContentType) {
+        store.accept(AdvicesStore.Intent.ClickOnDetails(week, contentType))
     }
 
     @AssistedFactory
     interface Factory {
 
         fun create(
-            @Assisted("week") week: Week,
-            @Assisted("contentType") contentType: ContentType,
-            @Assisted("onBackClicked") onBackClicked: () -> Unit,
+            @Assisted("onDetailsClick") onDetailsClick: (Week, ContentType) -> Unit,
             @Assisted("componentContext") componentContext: ComponentContext
-        ): DefaultDetailsComponent
+        ): DefaultAdvicesComponent
     }
 }

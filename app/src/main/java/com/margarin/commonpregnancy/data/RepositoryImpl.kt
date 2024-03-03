@@ -7,6 +7,8 @@ import com.margarin.commonpregnancy.domain.Repository
 import com.margarin.commonpregnancy.domain.model.Term
 import com.margarin.commonpregnancy.domain.model.Week
 import com.margarin.commonpregnancy.presentation.ui.theme.colorList
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
@@ -26,11 +28,15 @@ class RepositoryImpl @Inject constructor(
         color = colorList[weekNumber]
     )
 
-    override suspend fun getTimeOfStartPregnancy(): Term? {
-        return pregnancyDao.getTimeOfStartPregnancy()?.toEntity()
+    override fun getTimeOfStartPregnancy(): Flow<Term> {
+        return pregnancyDao.getTimeOfStartPregnancy().map { it?.toEntity() ?: Term() }
     }
 
     override suspend fun saveTimeOfStartPregnancy(timeInMillis: Long) {
         pregnancyDao.saveTimeOfStartPregnancy(timeInMillis.toTermDbModel())
+    }
+
+    override suspend fun checkIsConfigured(): Boolean {
+        return pregnancyDao.checkIsConfigured()
     }
 }

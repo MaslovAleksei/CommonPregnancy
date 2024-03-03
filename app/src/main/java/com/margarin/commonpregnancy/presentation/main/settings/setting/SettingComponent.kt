@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.settings.setting
+package com.margarin.commonpregnancy.presentation.main.settings.setting
 
 import kotlinx.coroutines.flow.StateFlow
 

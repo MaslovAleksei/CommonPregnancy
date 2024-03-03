@@ -1,10 +1,10 @@
-package com.margarin.commonpregnancy.presentation.settings
+package com.margarin.commonpregnancy.presentation.main.settings
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
-import com.margarin.commonpregnancy.presentation.settings.setting.SettingScreenContent
-import com.margarin.commonpregnancy.presentation.settings.terms.TermsContent
+import com.margarin.commonpregnancy.presentation.main.settings.setting.SettingScreenContent
+import com.margarin.commonpregnancy.presentation.main.settings.terms.TermsContent
 
 @Composable
 fun SettingsContent(

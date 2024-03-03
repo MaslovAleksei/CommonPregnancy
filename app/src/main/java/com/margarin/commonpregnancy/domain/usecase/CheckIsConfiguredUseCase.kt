@@ -3,8 +3,8 @@ package com.margarin.commonpregnancy.domain.usecase
 import com.margarin.commonpregnancy.domain.Repository
 import javax.inject.Inject
 
-class GetTimeOfStartPregnancyUseCase @Inject constructor(
+class CheckIsConfiguredUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    operator fun invoke() = repository.getTimeOfStartPregnancy()
+    suspend operator fun invoke() = repository.checkIsConfigured()
 }

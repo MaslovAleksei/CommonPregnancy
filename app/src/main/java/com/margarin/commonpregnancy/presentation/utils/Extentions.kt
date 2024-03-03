@@ -24,3 +24,8 @@ fun Calendar.formattedFullDate() : String {
     val format = SimpleDateFormat("d MMM y", Locale.getDefault())
     return format.format(time)
 }
+
+fun Calendar.formattedDayMonth() : String {
+    val format = SimpleDateFormat("dd MMMM", Locale.getDefault())
+    return format.format(time)
+}

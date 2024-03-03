@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.todo
+package com.margarin.commonpregnancy.presentation.main.todo
 
 import com.arkivanov.decompose.ComponentContext
 

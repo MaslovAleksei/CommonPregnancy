@@ -1,4 +1,4 @@
-package com.margarin.commonpregnancy.presentation.todo
+package com.margarin.commonpregnancy.presentation.main.todo
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
