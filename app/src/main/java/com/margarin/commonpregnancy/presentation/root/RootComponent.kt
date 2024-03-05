@@ -2,7 +2,7 @@ package com.margarin.commonpregnancy.presentation.root
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
-import com.margarin.commonpregnancy.presentation.firstsetting.FirstSettingComponent
+import com.margarin.commonpregnancy.firstsetting.FirstSettingComponent
 import com.margarin.commonpregnancy.presentation.main.MainComponent
 
 interface RootComponent {

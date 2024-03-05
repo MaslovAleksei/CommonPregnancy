@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="task_category_titles">
+        <item>Первый триместр</item>
+        <item>Второй триместр</item>
+        <item>Третий триместр</item>
+        <item>Список вещей в роддом</item>
+        <item>Список вещей после родов</item>
+        <item>Выписка. После родов</item>
+    </string-array>
+</resources>

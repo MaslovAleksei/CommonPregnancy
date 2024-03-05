@@ -1,0 +1,16 @@
+<resources>
+    <string name="week">неделя</string>
+    <string name="mother">Мама</string>
+    <string name="advices">Полезные советы</string>
+    <string name="weight">вес</string>
+    <string name="length">длина</string>
+    <string name="baby">Малыш</string>
+    <string name="centimetre">см</string>
+    <string name="gram">г</string>
+    <string name="current_week">текущая неделя</string>
+    <string name="trimester">триместр</string>
+    <string name="weeks_passed">Прошло недель: </string>
+    <string name="days">дней: </string>
+    <string name="weeks_left">Осталось недель: </string>
+    <string name="date_of_birth">Дата родов</string>
+</resources>

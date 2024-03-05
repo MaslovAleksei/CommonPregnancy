@@ -5,9 +5,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
-import com.margarin.commonpregnancy.presentation.firstsetting.FirstSettingContent
+import com.margarin.commonpregnancy.firstsetting.FirstSettingContent
 import com.margarin.commonpregnancy.presentation.main.MainContent
-import com.margarin.commonpregnancy.presentation.ui.theme.CommonPregnancyTheme
+import com.margarin.commonpregnancy.ui.theme.CommonPregnancyTheme
 
 @Composable
 fun RootContent(
