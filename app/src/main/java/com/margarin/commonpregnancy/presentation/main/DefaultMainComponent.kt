@@ -8,11 +8,11 @@ import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.webhistory.WebHistoryController
 import com.arkivanov.decompose.value.Value
-import com.margarin.commonpregnancy.presentation.main.home.DefaultHomeComponent
+import com.margarin.commonpregnancy.DefaultHomeComponent
 import com.margarin.commonpregnancy.presentation.main.MainComponent.Child
 import com.margarin.commonpregnancy.presentation.main.MainComponent.Child.*
-import com.margarin.commonpregnancy.presentation.main.settings.DefaultSettingsComponent
-import com.margarin.commonpregnancy.presentation.main.tasklist.DefaultTaskListComponent
+import com.margarin.commonpregnancy.DefaultSettingsComponent
+import com.margarin.commonpregnancy.DefaultTaskListComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

@@ -2,9 +2,9 @@ package com.margarin.commonpregnancy.presentation.main
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
-import com.margarin.commonpregnancy.presentation.main.home.HomeComponent
-import com.margarin.commonpregnancy.presentation.main.settings.SettingsComponent
-import com.margarin.commonpregnancy.presentation.main.tasklist.TaskListComponent
+import com.margarin.commonpregnancy.HomeComponent
+import com.margarin.commonpregnancy.SettingsComponent
+import com.margarin.commonpregnancy.TaskListComponent
 
 interface MainComponent {
 

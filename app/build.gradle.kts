@@ -55,11 +55,15 @@ android {
 
 dependencies {
 
+    implementation(project (":feature:advices"))
+    implementation(project (":feature:settings"))
+    implementation(project (":feature:tasks"))
+    implementation(project (":domain"))
+    implementation(project (":data"))
+    implementation(project (":core"))
+
     implementation(libs.dagger.core)
     ksp(libs.dagger.compiler)
-
-    implementation(libs.room.core)
-    ksp(libs.room.compiler)
 
     implementation(libs.mvikotlin.core)
     implementation(libs.mvikotlin.main)

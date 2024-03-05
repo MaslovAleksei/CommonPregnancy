@@ -9,11 +9,11 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
-import com.margarin.commonpregnancy.domain.usecase.CheckIsConfiguredUseCase
-import com.margarin.commonpregnancy.presentation.firstsetting.DefaultFirstSettingComponent
+import com.margarin.commonpregnancy.usecase.CheckIsConfiguredUseCase
+import com.margarin.commonpregnancy.firstsetting.DefaultFirstSettingComponent
 import com.margarin.commonpregnancy.presentation.main.DefaultMainComponent
 import com.margarin.commonpregnancy.presentation.main.MainComponent.Child.*
-import com.margarin.commonpregnancy.presentation.utils.componentScope
+import com.margarin.commonpregnancy.componentScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

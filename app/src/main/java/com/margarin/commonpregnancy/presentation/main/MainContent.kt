@@ -32,12 +32,12 @@ import com.margarin.commonpregnancy.R
 import com.margarin.commonpregnancy.presentation.main.MainComponent.Child.HomeChild
 import com.margarin.commonpregnancy.presentation.main.MainComponent.Child.SettingsChild
 import com.margarin.commonpregnancy.presentation.main.MainComponent.Child.TaskChild
-import com.margarin.commonpregnancy.presentation.main.home.HomeContent
-import com.margarin.commonpregnancy.presentation.main.settings.SettingsContent
-import com.margarin.commonpregnancy.presentation.main.tasklist.TaskListContent
-import com.margarin.commonpregnancy.presentation.ui.theme.Green
-import com.margarin.commonpregnancy.presentation.ui.theme.Pink
-import com.margarin.commonpregnancy.presentation.ui.theme.Purple
+import com.margarin.commonpregnancy.HomeContent
+import com.margarin.commonpregnancy.SettingsContent
+import com.margarin.commonpregnancy.TaskListContent
+import com.margarin.commonpregnancy.ui.theme.Green
+import com.margarin.commonpregnancy.ui.theme.Pink
+import com.margarin.commonpregnancy.ui.theme.Purple
 
 @Composable
 fun MainContent(component: MainComponent) {
