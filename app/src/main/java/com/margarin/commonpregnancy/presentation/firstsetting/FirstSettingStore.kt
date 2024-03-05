@@ -15,15 +15,15 @@ import javax.inject.Inject
 interface FirstSettingStore : Store<Intent, State, Label> {
 
     sealed interface Intent {
-        data class SaveChanges(val timeStamp: Long) : Intent
         data class ChangeTerm(val timeStamp: Long) : Intent
+        data object SaveChanges : Intent
         data object ChangeAgreementCheckState: Intent
     }
 
     data class State(
         val timeStamp: Long,
         val isTermChanged: Boolean,
-        val isAgreed: Boolean = false
+        val isAgreed: Boolean
     )
 
     sealed interface Label {
@@ -57,7 +57,8 @@ class FirstSettingStoreFactory @Inject constructor(
     }
 
     private inner class BootstrapperImpl : CoroutineBootstrapper<Action>() {
-        override fun invoke() {}
+        override fun invoke() {
+        }
     }
 
     private inner class ExecutorImpl : CoroutineExecutor<Intent, Action, State, Msg, Label>() {
@@ -70,7 +71,7 @@ class FirstSettingStoreFactory @Inject constructor(
 
                 is Intent.SaveChanges -> {
                     scope.launch {
-                        saveTimeOfStartPregnancyUseCase(intent.timeStamp)
+                        saveTimeOfStartPregnancyUseCase(getState().timeStamp)
                         publish(Label.SaveChanges)
                     }
                 }

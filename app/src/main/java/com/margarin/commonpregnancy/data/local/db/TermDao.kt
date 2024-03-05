@@ -8,7 +8,7 @@ import com.margarin.commonpregnancy.data.local.model.TermDbModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface PregnancyDao {
+interface TermDao {
 
     @Query("SELECT * FROM term WHERE id=0")
     fun getTimeOfStartPregnancy(): Flow<TermDbModel?>

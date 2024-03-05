@@ -31,10 +31,10 @@ import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.margarin.commonpregnancy.R
 import com.margarin.commonpregnancy.presentation.main.MainComponent.Child.HomeChild
 import com.margarin.commonpregnancy.presentation.main.MainComponent.Child.SettingsChild
-import com.margarin.commonpregnancy.presentation.main.MainComponent.Child.ToDoChild
+import com.margarin.commonpregnancy.presentation.main.MainComponent.Child.TaskChild
 import com.margarin.commonpregnancy.presentation.main.home.HomeContent
 import com.margarin.commonpregnancy.presentation.main.settings.SettingsContent
-import com.margarin.commonpregnancy.presentation.main.todo.ToDoContent
+import com.margarin.commonpregnancy.presentation.main.tasklist.TaskListContent
 import com.margarin.commonpregnancy.presentation.ui.theme.Green
 import com.margarin.commonpregnancy.presentation.ui.theme.Pink
 import com.margarin.commonpregnancy.presentation.ui.theme.Purple
@@ -73,7 +73,7 @@ private fun Children(component: MainComponent, modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxSize()
             )
 
-            is ToDoChild -> ToDoContent(
+            is TaskChild -> TaskListContent(
                 component = child.component,
                 modifier = Modifier.fillMaxSize()
             )
@@ -112,8 +112,8 @@ private fun BottomBar(component: MainComponent, modifier: Modifier = Modifier) {
 
         NavigationBarItem(
 
-            selected = activeComponent is ToDoChild,
-            onClick = component::onToDoTabClicked,
+            selected = activeComponent is TaskChild,
+            onClick = component::onTaskTabClicked,
             icon = {
                 Icon(
                     imageVector = Icons.AutoMirrored.Outlined.List,

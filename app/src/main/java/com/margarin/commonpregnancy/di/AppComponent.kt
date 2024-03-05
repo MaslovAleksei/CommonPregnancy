@@ -1,6 +1,7 @@
 package com.margarin.commonpregnancy.di
 
 import android.content.Context
+import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.margarin.commonpregnancy.MainActivity
 import dagger.BindsInstance
 import dagger.Component
@@ -14,6 +15,7 @@ import dagger.Component
 )
 interface AppComponent {
 
+    @OptIn(ExperimentalDecomposeApi::class)
     fun inject(activity: MainActivity)
 
     @Component.Factory

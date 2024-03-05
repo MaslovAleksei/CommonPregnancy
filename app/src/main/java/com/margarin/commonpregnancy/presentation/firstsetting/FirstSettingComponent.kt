@@ -6,7 +6,7 @@ interface FirstSettingComponent {
 
     val model: StateFlow<FirstSettingStore.State>
 
-    fun onSaveChanges(timeStamp: Long)
+    fun onSaveChanges()
     fun onChangeTerm(timeStamp: Long)
     fun onChangeAgreementCheckState()
 }

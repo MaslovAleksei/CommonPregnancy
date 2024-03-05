@@ -66,6 +66,7 @@ import com.margarin.commonpregnancy.presentation.ui.theme.Green
 import com.margarin.commonpregnancy.presentation.ui.theme.Pink
 import com.margarin.commonpregnancy.presentation.ui.theme.Purple
 import com.margarin.commonpregnancy.presentation.utils.ContentType
+import com.margarin.commonpregnancy.presentation.utils.PREGNANCY_DURATION
 import com.margarin.commonpregnancy.presentation.utils.formattedDayMonth
 import com.margarin.commonpregnancy.presentation.utils.toCalendar
 import kotlinx.coroutines.CoroutineScope
@@ -476,4 +477,3 @@ private fun ProgressField(
 }
 
 private const val ITEM_DIAMETER = 70
-private const val PREGNANCY_DURATION = 280

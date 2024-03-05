@@ -36,8 +36,8 @@ class DefaultFirstSettingComponent @AssistedInject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     override val model: StateFlow<FirstSettingStore.State> = store.stateFlow
 
-    override fun onSaveChanges(timeStamp: Long) {
-        store.accept(FirstSettingStore.Intent.SaveChanges(timeStamp))
+    override fun onSaveChanges() {
+        store.accept(FirstSettingStore.Intent.SaveChanges)
     }
 
     override fun onChangeTerm(timeStamp: Long) {

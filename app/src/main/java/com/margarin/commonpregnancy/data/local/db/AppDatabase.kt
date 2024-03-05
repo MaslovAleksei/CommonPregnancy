@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.margarin.commonpregnancy.data.local.model.TaskDbModel
 import com.margarin.commonpregnancy.data.local.model.TermDbModel
 
-@Database(entities = [TermDbModel::class], version = 1, exportSchema = false)
+@Database(entities = [TermDbModel::class, TaskDbModel::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun pregnancyDao(): PregnancyDao
+    abstract fun termDao(): TermDao
+    abstract fun taskDao(): TaskDao
 
     companion object {
 

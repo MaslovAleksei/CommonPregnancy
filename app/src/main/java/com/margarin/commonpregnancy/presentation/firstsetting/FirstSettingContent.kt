@@ -49,6 +49,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.margarin.commonpregnancy.R
 import com.margarin.commonpregnancy.presentation.ui.theme.Pink
+import com.margarin.commonpregnancy.presentation.utils.CONCEPTION_DURATION
+import com.margarin.commonpregnancy.presentation.utils.PREGNANCY_DURATION
 import com.margarin.commonpregnancy.presentation.utils.formattedFullDate
 import com.margarin.commonpregnancy.presentation.utils.toCalendar
 import java.util.Calendar
@@ -61,10 +63,10 @@ fun FirstSettingContent(component: FirstSettingComponent) {
 
     val lastMenstruationDate = currentState.timeStamp.toCalendar()
     val dateOfBirth = currentState.timeStamp.toCalendar().apply {
-        add(Calendar.DAY_OF_YEAR, 280)
+        add(Calendar.DAY_OF_YEAR, PREGNANCY_DURATION)
     }
     val dateOfConception = currentState.timeStamp.toCalendar().apply {
-        add(Calendar.DAY_OF_YEAR, 14)
+        add(Calendar.DAY_OF_YEAR, CONCEPTION_DURATION)
     }
 
     Column(
@@ -118,7 +120,7 @@ fun FirstSettingContent(component: FirstSettingComponent) {
                 },
                 onConfirmDateClick = { dateOfConception ->
                     val lastMenstruation = dateOfConception.toCalendar().apply {
-                        add(Calendar.DAY_OF_YEAR, -14)
+                        add(Calendar.DAY_OF_YEAR, -CONCEPTION_DURATION)
                     }.timeInMillis
                     component.onChangeTerm(timeStamp = lastMenstruation)
                 }
@@ -132,7 +134,7 @@ fun FirstSettingContent(component: FirstSettingComponent) {
                 },
                 onConfirmDateClick = { dateOfBirth ->
                     val lastMenstruation = dateOfBirth.toCalendar().apply {
-                        add(Calendar.DAY_OF_YEAR, -280)
+                        add(Calendar.DAY_OF_YEAR, -PREGNANCY_DURATION)
                     }.timeInMillis
                     component.onChangeTerm(timeStamp = lastMenstruation)
                 }
@@ -176,7 +178,7 @@ fun FirstSettingContent(component: FirstSettingComponent) {
             }
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { component.onSaveChanges(currentState.timeStamp) },
+                onClick = { component.onSaveChanges() },
                 enabled = currentState.isTermChanged && currentState.isAgreed,
                 colors = ButtonColors(
                     containerColor = Pink,

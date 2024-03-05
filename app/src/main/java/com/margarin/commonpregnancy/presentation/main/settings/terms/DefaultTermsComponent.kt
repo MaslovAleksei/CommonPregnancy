@@ -41,8 +41,8 @@ class DefaultTermsComponent @AssistedInject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     override val model: StateFlow<TermsStore.State> = store.stateFlow
 
-    override fun onSaveChanges(timeStamp: Long) {
-        store.accept(TermsStore.Intent.SaveChanges(timeStamp))
+    override fun onSaveChanges() {
+        store.accept(TermsStore.Intent.SaveChanges)
     }
 
     override fun onChangeTerm(timeStamp: Long) {

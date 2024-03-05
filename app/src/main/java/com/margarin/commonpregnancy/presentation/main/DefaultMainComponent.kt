@@ -12,7 +12,7 @@ import com.margarin.commonpregnancy.presentation.main.home.DefaultHomeComponent
 import com.margarin.commonpregnancy.presentation.main.MainComponent.Child
 import com.margarin.commonpregnancy.presentation.main.MainComponent.Child.*
 import com.margarin.commonpregnancy.presentation.main.settings.DefaultSettingsComponent
-import com.margarin.commonpregnancy.presentation.main.todo.DefaultToDoComponent
+import com.margarin.commonpregnancy.presentation.main.tasklist.DefaultTaskListComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -22,6 +22,7 @@ import kotlinx.serialization.Serializable
 class DefaultMainComponent @AssistedInject constructor(
     private val mainComponentFactory: DefaultHomeComponent.Factory,
     private val settingsComponentFactory: DefaultSettingsComponent.Factory,
+    private val taskListComponentFactory: DefaultTaskListComponent.Factory,
     @Assisted("componentContext") componentContext: ComponentContext,
 ) : MainComponent, ComponentContext by componentContext {
     private val deepLink: DeepLink = DeepLink.None
@@ -65,15 +66,19 @@ class DefaultMainComponent @AssistedInject constructor(
                 val component = settingsComponentFactory.create(componentContext = componentContext)
                 SettingsChild(component)
             }
-            is Config.ToDo -> ToDoChild(DefaultToDoComponent(componentContext))
+
+            is Config.Task -> {
+                val component = taskListComponentFactory.create(componentContext = componentContext)
+                TaskChild(component)
+            }
         }
 
     override fun onHomeTabClicked() {
         navigation.bringToFront(Config.Home)
     }
 
-    override fun onToDoTabClicked() {
-        navigation.bringToFront(Config.ToDo)
+    override fun onTaskTabClicked() {
+        navigation.bringToFront(Config.Task)
     }
 
     override fun onSettingsTabClicked() {
@@ -82,7 +87,7 @@ class DefaultMainComponent @AssistedInject constructor(
 
     private companion object {
         private const val WEB_PATH_HOME = "home"
-        private const val WEB_PATH_TODO = "todo"
+        private const val WEB_PATH_TASK = "task"
         private const val WEB_PATH_SETTINGS = "settings"
 
         private fun getInitialStack(
@@ -104,14 +109,14 @@ class DefaultMainComponent @AssistedInject constructor(
             when (config) {
                 Config.Home -> "/$WEB_PATH_HOME"
                 Config.Settings -> "/$WEB_PATH_SETTINGS"
-                Config.ToDo -> "/$WEB_PATH_TODO"
+                Config.Task -> "/$WEB_PATH_TASK"
             }
 
         private fun getConfigForPath(path: String): Config =
             when (path.removePrefix("/")) {
                 WEB_PATH_HOME -> Config.Home
                 WEB_PATH_SETTINGS -> Config.Settings
-                WEB_PATH_TODO -> Config.ToDo
+                WEB_PATH_TASK -> Config.Task
                 else -> Config.Home
             }
     }
@@ -122,7 +127,7 @@ class DefaultMainComponent @AssistedInject constructor(
         data object Home : Config
 
         @Serializable
-        data object ToDo : Config
+        data object Task : Config
 
         @Serializable
         data object Settings : Config
