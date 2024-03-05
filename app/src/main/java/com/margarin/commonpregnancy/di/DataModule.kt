@@ -3,7 +3,8 @@ package com.margarin.commonpregnancy.di
 import android.content.Context
 import com.margarin.commonpregnancy.data.RepositoryImpl
 import com.margarin.commonpregnancy.data.local.db.AppDatabase
-import com.margarin.commonpregnancy.data.local.db.PregnancyDao
+import com.margarin.commonpregnancy.data.local.db.TaskDao
+import com.margarin.commonpregnancy.data.local.db.TermDao
 import com.margarin.commonpregnancy.domain.Repository
 import dagger.Binds
 import dagger.Module
@@ -26,8 +27,14 @@ interface DataModule {
 
         @Provides
         @AppScope
-        fun providePregnancyDao(context: Context): PregnancyDao {
-            return AppDatabase.getInstance(context).pregnancyDao()
+        fun provideTermDao(context: Context): TermDao {
+            return AppDatabase.getInstance(context).termDao()
+        }
+
+        @Provides
+        @AppScope
+        fun provideTaskDao(context: Context): TaskDao {
+            return AppDatabase.getInstance(context).taskDao()
         }
     }
 }

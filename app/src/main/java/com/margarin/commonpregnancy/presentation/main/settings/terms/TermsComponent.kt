@@ -6,7 +6,7 @@ interface TermsComponent {
 
     val model: StateFlow<TermsStore.State>
 
-    fun onSaveChanges(timeStamp: Long)
+    fun onSaveChanges()
     fun onChangeTerm(timeStamp: Long)
     fun onClickBack()
 }

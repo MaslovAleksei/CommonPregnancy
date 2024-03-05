@@ -1,16 +1,13 @@
 <resources>
     <string name="app_name">Common Pregnancy</string>
 
-    <string-array name="weeks">
-        <item>Week 1</item>
-        <item>Week 2</item>
-        <item>Week 3</item>
-        <item>Week 4</item>
-        <item>Week 5</item>
-        <item>Week 6</item>
-        <item>Week 7</item>
-        <item>Week 8</item>
-        <item>Week 9</item>
+    <string-array name="task_category_titles">
+        <item>Первый триместр</item>
+        <item>Второй триместр</item>
+        <item>Третий триместр</item>
+        <item>Список вещей в роддом</item>
+        <item>Список вещей после родов</item>
+        <item>Выписка. После родов</item>
     </string-array>
     <string name="title_activity_main">MainActivity</string>
     <string name="week">неделя</string>
@@ -41,4 +38,5 @@
     <string name="weeks_left">Осталось недель: </string>
     <string name="specify_date">Укажите дату</string>
     <string name="license_agreement">Я согласен с правилами и политикой конфиденциальности</string>
+    <string name="todo_list">Список дел</string>
 </resources>

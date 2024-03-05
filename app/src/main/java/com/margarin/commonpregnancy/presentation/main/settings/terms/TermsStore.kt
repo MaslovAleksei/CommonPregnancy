@@ -18,7 +18,7 @@ interface TermsStore : Store<Intent, State, Label> {
 
     sealed interface Intent {
         data object ClickBack : Intent
-        data class SaveChanges(val timeStamp: Long) : Intent
+        data object SaveChanges : Intent
         data class ChangeTerm(val timeStamp: Long) : Intent
     }
 
@@ -52,7 +52,7 @@ class TermsStoreFactory @Inject constructor(
         ) {}
 
     private sealed interface Action {
-        data class TimeStampLoaded(val timeStamp: Long, val isTermChanged: Boolean) : Action
+        data class TimeStampLoaded(val timeStamp: Long) : Action
     }
 
     private sealed interface Msg {
@@ -67,8 +67,7 @@ class TermsStoreFactory @Inject constructor(
                    term.collect { term ->
                         dispatch(
                             Action.TimeStampLoaded(
-                                timeStamp = term.timeOfStartPregnancy.timeInMillis,
-                                isTermChanged = false
+                                timeStamp = term.timeOfStartPregnancy.timeInMillis
                             )
                         )
                     }
@@ -91,7 +90,7 @@ class TermsStoreFactory @Inject constructor(
 
                 is Intent.SaveChanges -> {
                     scope.launch {
-                        saveTimeOfStartPregnancyUseCase(intent.timeStamp)
+                        saveTimeOfStartPregnancyUseCase(getState().timeStamp)
                         publish(Label.SaveChanges)
                     }
                 }

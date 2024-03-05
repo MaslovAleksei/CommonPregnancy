@@ -1,21 +1,21 @@
 package com.margarin.commonpregnancy.data
 
 import com.margarin.commonpregnancy.R
+import com.margarin.commonpregnancy.data.local.model.TaskDbModel
 import com.margarin.commonpregnancy.data.local.model.TermDbModel
+import com.margarin.commonpregnancy.domain.model.Task
 import com.margarin.commonpregnancy.domain.model.Term
 import com.margarin.commonpregnancy.presentation.utils.toCalendar
 
+/** Term */
+fun Long.toTermDbModel() = TermDbModel(timeOfStartPregnancy = this)
 
-fun Long.toTermDbModel(): TermDbModel =
-    TermDbModel(
-        timeOfStartPregnancy = this
-    )
+fun TermDbModel.toEntity() = Term(timeOfStartPregnancy = timeOfStartPregnancy.toCalendar())
 
-fun TermDbModel.toEntity(): Term =
-    Term(
-        timeOfStartPregnancy = timeOfStartPregnancy.toCalendar()
-    )
+/** Task */
+fun Task.toTaskDbModel() = TaskDbModel(value = this.value)
 
+/** Week */
 fun Int.getChildImageResId(): Int {
     val imageList = listOf(
         R.drawable.week_1_3,
