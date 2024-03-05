@@ -4,11 +4,9 @@ And there is also a detailed to-do list for each stage of pregnancy. Completed t
 
 ## Screenshots
 
-**Please click the image below to enlarge.**
-
 <img src="sample/screenshot_1.webp" height="550" width="250" hspace="40"><img src="sample/screenshot_2.webp" height="550" width="250" hspace="40">
 
-<img src="sample/screenshot_2.webp" height="550" width="250" hspace="40"><img src="sample/screenshot_1.webp" height="550" width="250" hspace="40">
+<img src="sample/screenshot_3.webp" height="550" width="250" hspace="40"><img src="sample/screenshot_4.webp" height="550" width="250" hspace="40">
 
 ## Technologies used 🛠:
 
