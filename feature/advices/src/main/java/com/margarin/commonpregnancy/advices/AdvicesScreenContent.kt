@@ -24,7 +24,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.PagerSnapDistance
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -80,6 +79,7 @@ import java.util.Locale
 fun AdvicesScreenContent(component: AdvicesComponent) {
 
     val state by component.model.collectAsState()
+    val scope = rememberCoroutineScope()
     val currentWeek = state.week
     val term = state.term
     val currentDate = Calendar.getInstance(Locale.getDefault())
@@ -189,10 +189,16 @@ fun AdvicesScreenContent(component: AdvicesComponent) {
         ) { weekNumber ->
             WeekNumberItem(
                 number = weekNumber,
-                pagerState = pagerState,
-                scope = rememberCoroutineScope(),
+                scope = scope,
                 color = Color(currentWeek.color),
-                currentWeek = weeksOfYearPassed
+                currentWeek = weeksOfYearPassed,
+                currentPage = { pagerState.currentPage },
+                currentPageOffsetFraction = { pagerState.currentPageOffsetFraction },
+                animateScrollToPage = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(weekNumber)
+                    }
+                }
             )
         }
 
@@ -251,23 +257,23 @@ fun AdvicesScreenContent(component: AdvicesComponent) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("FrequentlyChangedStateReadInComposition")
 @Composable
 private fun WeekNumberItem(
     number: Int,
-    pagerState: PagerState,
     scope: CoroutineScope,
     color: Color,
-    currentWeek: Int
+    currentWeek: Int,
+    currentPage: () -> Int,
+    currentPageOffsetFraction: () -> Float,
+    animateScrollToPage: () -> Unit
 ) {
-
     var weekLabel = ""
     var backgroundColor = color.copy(alpha = 0.05f)
     var textColor = color
     var strokeWidth = 1.dp
 
-    if (number == pagerState.currentPage) {
+    if (number == currentPage()) {
         weekLabel = stringResource(R.string.week)
         backgroundColor = color
         textColor = Color.White
@@ -286,8 +292,7 @@ private fun WeekNumberItem(
             .height(110.dp)
             .graphicsLayer {
                 val pageOffset = (
-                        (pagerState.currentPage - number) + pagerState
-                            .currentPageOffsetFraction
+                        (currentPage() - number) + currentPageOffsetFraction()
                         )
 
                 val size = if (pageOffset in -0.1f..0.1f) 1f else 0.85f
@@ -304,7 +309,7 @@ private fun WeekNumberItem(
                     interactionSource = remember { MutableInteractionSource() }
                 ) {
                     scope.launch {
-                        pagerState.animateScrollToPage(page = number)
+                        animateScrollToPage()
                     }
                 }
                 .background(
